@@ -66,8 +66,9 @@ public class StudentService {
             Student existingStudent = studentOptional.get();
             // Update the fields of the existing student object
             existingStudent.setName(updatedStudentDetails.getName());
-            existingStudent.setAge(updatedStudentDetails.getAge());
             existingStudent.setGender(updatedStudentDetails.getGender());
+            existingStudent.setEmail(updatedStudentDetails.getEmail());
+            existingStudent.setScore(updatedStudentDetails.getScore());
 
             // Pass the modified existing student object back to repository save
             // The repository's save method handles the logic for updating based on ID

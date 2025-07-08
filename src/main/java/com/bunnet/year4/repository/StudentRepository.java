@@ -18,8 +18,12 @@ public class StudentRepository {
     private final AtomicLong counter = new AtomicLong();
 
     public StudentRepository() {
-        students.add(new Student(counter.incrementAndGet(), "Alice Smith", 20, "Female"));
-        students.add(new Student(counter.incrementAndGet(), "Bob Johnson", 21, "Male"));
+        students.add(new Student(counter.incrementAndGet(), "Alice Smith", "Female", "AliceSmith@email.com", 85));
+        students.add(new Student(counter.incrementAndGet(), "Bob Johnson", "Male", "BobJohnson@email.com", 92));
+        students.add(new Student(counter.incrementAndGet(), "Charlie Brown", "Male", "CharlieBrown@email.com", 78));
+        students.add(new Student(counter.incrementAndGet(), "David Lee", "Male", "DavidLee@email.com", 95));
+        students.add(new Student(counter.incrementAndGet(), "Eva Davis", "Female", "EvaDavis@email.com", 88));
+
     }
 
     /**
@@ -65,8 +69,9 @@ public class StudentRepository {
                 Student existingStudent = existingStudentOpt.get();
                 // Update fields (excluding ID)
                 existingStudent.setName(student.getName());
-                existingStudent.setAge(student.getAge());
                 existingStudent.setGender(student.getGender());
+                existingStudent.setEmail(student.getEmail());
+                existingStudent.setScore(student.getScore());
                 return existingStudent; // Return the updated object
             } else {
 
