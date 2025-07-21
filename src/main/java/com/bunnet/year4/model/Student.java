@@ -1,31 +1,34 @@
-// src/main/java/com/bunnet/year4/model/Student.java
+// src/main/java/com/example/demo/model/Student.java
 package com.bunnet.year4.model;
 
-import java.util.Objects;
+import java.util.Objects;          // Import for @Entity
 
+import jakarta.persistence.Entity;  // Import for @GeneratedValue
+import jakarta.persistence.GeneratedValue;  // Import for GenerationType
+import jakarta.persistence.GenerationType;              // Import for @Id
+import jakarta.persistence.Id;
+
+@Entity
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String gender;
-    private String email; // Added 'private' keyword - good practice
-    private int score;   // Added 'private' keyword - good practice
 
-    // --- Constructors ---
-    // Constructor with all fields (RECOMMENDED if creating students with initial data)
-    public Student(Long id, String name, String gender, String email, int score) {
+    // Constructor
+    public Student(Long id, String name, int age, String gender) {
         this.id = id;
         this.name = name;
         this.gender = gender;
-        this.email = email;
-        this.score = score;
     }
 
-    // Default constructor needed for Jackson (JSON serialization/deserialization)
+    // Default constructor needed for Jackson
     public Student() {
     }
 
-    // --- Getters (REQUIRED for Jackson serialization) ---
+    // Getters (REQUIRED for Jackson serialization)
     public Long getId() {
         return id;
     }
@@ -34,20 +37,16 @@ public class Student {
         return name;
     }
 
+    // Add these getter methods!
+    public int getAge() {
+        return age;
+    }
+
     public String getGender() {
         return gender;
     }
 
-    // --- New Getters for email and score ---
-    public String getEmail() {
-        return email;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    // --- Setters (REQUIRED for Jackson deserialization when receiving JSON requests) ---
+    // Setters (optional if you only need GET, required for POST/PUT to deserialize)
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,23 +55,14 @@ public class Student {
         this.name = name;
     }
 
-    public void setGender(String gender) {
+    public void setAge(int age) { // Add setter if needed for POST/PUT
+        this.age = age;
+    }
+
+    public void setGender(String gender) { // Add setter if needed for POST/PUT
         this.gender = gender;
     }
 
-    // --- New Setters for email and score ---
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    // --- equals(), hashCode(), toString() ---
-    // NOTE: These methods in your provided snippet do *not* include email and score.
-    // For a complete and correct model, you should regenerate or manually update them
-    // to include all relevant fields (id, name, age, gender, email, score).
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -82,7 +72,8 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return score == student.score // Added score
+        // Include age and gender in equality check
+        return age == student.age
                 && Objects.equals(id, student.id)
                 && Objects.equals(name, student.name)
                 && Objects.equals(gender, student.gender)
@@ -91,7 +82,7 @@ public class Student {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, gender, email, score); // Added email, score
+        return Objects.hash(id, name, age, gender);
     }
 
     @Override
@@ -100,8 +91,7 @@ public class Student {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", gender='" + gender + '\''
-                + ", email='" + email + '\'' // Added email
-                + ", score=" + score // Added score
-                + '}';
+                + // Include new fields in toString
+                '}';
     }
 }

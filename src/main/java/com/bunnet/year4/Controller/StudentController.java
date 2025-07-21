@@ -3,74 +3,43 @@ package com.bunnet.year4.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bunnet.year4.model.Student;
-import com.bunnet.year4.service.StudentService;
 
-@RestController // Marks this class as a REST Controller
-@RequestMapping("/api/v1/students") // Sets the base path for all endpoints in this controller
+@RestController
+@RequestMapping("/api/students") // Added a base path for clarity
 public class StudentController {
 
-    private final StudentService studentService;
+    private final List<Student> students = new ArrayList<>();
 
-    // Inject the StudentService dependency
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
+    // Constructor - Populating the list here
+    public StudentController() {
+        students.add(new Student(1L, "Dara", 20, "Male"));
+        students.add(new Student(2L, "Dany", 21, "Female"));
+        students.add(new Student(3L, "Maya", 25, "Female"));
+
     }
 
+    // GET /api/students
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+        return students;
     }
 
+    // GET /api/students/{id}
+    // Fetches a single student by ID from the database
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Optional<Student> student = studentService.getStudentById(id);
-        // Return 200 OK with student body if found, else 404 Not Found
-        return student.map(ResponseEntity::ok) // If student is present, return 200 OK
-                .orElseGet(() -> ResponseEntity.notFound().build()); // If not present, return 404 Not Found
-    }
+        Optional<Student> studentOptional = students.stream()
+                .filter(student -> student.getId().equals(id)) // Use .equals for object comparison
+                .findFirst(); // findFirst returns Optional<Student>
 
-    @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
-        // Return 201 Created status with the newly created student in the body
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student studentDetails) {
-        // The service method handles finding and updating.
-        // We pass the ID from the path and the updated data from the request body.
-        Optional<Student> updatedStudent = studentService.updateStudent(id, studentDetails);
-
-        // Return 200 OK with updated student if found, else 404 Not Found
-        return updatedStudent.map(ResponseEntity::ok) // If updatedStudent is present, return 200 OK
-                .orElseGet(() -> ResponseEntity.notFound().build()); // If not present, return 404 Not Found
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        boolean isDeleted = studentService.deleteStudent(id);
-
-        if (isDeleted) {
-            // Return 200 OK or 204 No Content (204 is common for successful deletion with no response body)
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } else {
-            // Return 404 Not Found if the student wasn't found
-            return ResponseEntity.notFound().build();
-        }
+        return studentOptional.map(student -> ResponseEntity.ok(student)) // If Optional has a value, return OK
+                .orElseGet(() -> ResponseEntity.notFound().build()); // If Optional is empty, return 404
     }
 }
