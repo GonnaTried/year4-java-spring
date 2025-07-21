@@ -29,7 +29,7 @@ public class Student {
     public Student() {
     }
 
-    // --- Getters ---
+    // --- Getters
     public Long getId() {
         return id;
     }
