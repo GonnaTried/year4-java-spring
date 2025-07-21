@@ -1,4 +1,4 @@
-package com.bunnet.year4.controller;
+package com.bunnet.year4.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

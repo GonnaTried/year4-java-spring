@@ -85,6 +85,10 @@ public class StudentService {
      * @return true if the student was found and deleted, false otherwise.
      */
     public boolean deleteStudent(Long id) {
-        return studentRepository.deleteById(id);
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
