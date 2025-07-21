@@ -1,28 +1,35 @@
-// src/main/java/com/example/demo/model/Student.java
 package com.bunnet.year4.model;
 
-import java.util.Objects;
+import java.util.Objects;          // Import for @Entity
 
+import jakarta.persistence.Entity;  // Import for @GeneratedValue
+import jakarta.persistence.GeneratedValue;  // Import for GenerationType
+import jakarta.persistence.GenerationType;              // Import for @Id
+import jakarta.persistence.Id;
+
+@Entity
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;
     private String gender;
+    private int score;
 
-    // Constructor
-    public Student(Long id, String name, int age, String gender) {
+    public Student(Long id, String name, int age, String gender, int score) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.score = score;
     }
 
-    // Default constructor needed for Jackson
     public Student() {
     }
 
-    // Getters (REQUIRED for Jackson serialization)
+    // --- Getters ---
     public Long getId() {
         return id;
     }
@@ -31,7 +38,6 @@ public class Student {
         return name;
     }
 
-    // Add these getter methods!
     public int getAge() {
         return age;
     }
@@ -40,7 +46,11 @@ public class Student {
         return gender;
     }
 
-    // Setters (optional if you only need GET, required for POST/PUT to deserialize)
+    public int getScore() {
+        return score;
+    }
+
+    // --- Setters ---
     public void setId(Long id) {
         this.id = id;
     }
@@ -49,14 +59,19 @@ public class Student {
         this.name = name;
     }
 
-    public void setAge(int age) { // Add setter if needed for POST/PUT
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public void setGender(String gender) { // Add setter if needed for POST/PUT
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    // --- Overridden Methods ---
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,8 +81,8 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        // Include age and gender in equality check
         return age == student.age
+                && score == student.score
                 && Objects.equals(id, student.id)
                 && Objects.equals(name, student.name)
                 && Objects.equals(gender, student.gender);
@@ -75,7 +90,7 @@ public class Student {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, gender);
+        return Objects.hash(id, name, age, gender, score);
     }
 
     @Override
@@ -85,7 +100,7 @@ public class Student {
                 + ", name='" + name + '\''
                 + ", age=" + age
                 + ", gender='" + gender + '\''
-                + // Include new fields in toString
-                '}';
+                + ", score=" + score
+                + '}';
     }
 }
