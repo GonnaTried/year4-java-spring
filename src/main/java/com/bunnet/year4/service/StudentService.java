@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bunnet.year4.model.Student;
 import com.bunnet.year4.repository.StudentRepository;
+import com.bunnet.year4.exception.ResourceNotFoundException;
 
 @Service // Marks this class as a Spring Service component
 public class StudentService {
@@ -35,7 +39,8 @@ public class StudentService {
      * @return An Optional containing the student if found.
      */
     public Optional<Student> getStudentById(Long id) {
-        return studentRepository.findById(id);
+        return Optional.ofNullable(studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id)));
     }
 
     /**
@@ -74,7 +79,8 @@ public class StudentService {
             // The repository's save method handles the logic for updating based on ID
             return Optional.of(studentRepository.save(existingStudent));
         } else {
-            return Optional.empty(); // Student not found
+            return Optional.ofNullable(studentRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("No student with id: " + id + " to update")));
         }
     }
 
@@ -84,11 +90,13 @@ public class StudentService {
      * @param id The ID of the student to delete.
      * @return true if the student was found and deleted, false otherwise.
      */
-    public boolean deleteStudent(Long id) {
-        if (studentRepository.existsById(id)) {
-            studentRepository.deleteById(id);
-            return true;
+    public void deleteStudent(Long id) {
+
+        if (!studentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Student with ID: " + id + " not found for deletion.");
         }
-        return false;
+
+        studentRepository.deleteById(id);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.bunnet.year4.Controller;
+package com.bunnet.year4.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,14 +63,9 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
-        boolean isDeleted = studentService.deleteStudent(id);
 
-        if (isDeleted) {
-            // Return 200 OK or 204 No Content (204 is common for successful deletion with no response body)
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } else {
-            // Return 404 Not Found if the student wasn't found
-            return ResponseEntity.notFound().build();
-        }
+        studentService.deleteStudent(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
