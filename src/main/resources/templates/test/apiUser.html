@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Page</title>
+  <style>
+    body { font-family: sans-serif; background-color: #f4f4f9; color: #333; text-align: center; margin-top: 50px; }
+    h1 { color: #0056b3; }
+    .container { background: white; padding: 2em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: inline-block; }
+    a { color: #007bff; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- 'username' will be passed from the controller -->
+  <h1>Welcome to the User Page, <span th:text="${username}">User</span>!</h1>
+  <p>This page is only accessible to logged-in users with the USER or ADMIN role.</p>
+  <p><a th:href="@{/home}">Back to Home</a></p>
+  <p><a th:href="@{/logout}">Logout</a></p>
+
+</div>
+</body>
+</html>
