@@ -1,0 +1,141 @@
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/adminLayout :: layout(~{::title}, ~{::main})}"
+>
+  <head>
+    <title>Manage User</title>
+  </head>
+  <main>
+    <section class="section">
+      <div class="container">
+        <!-- Page Header/Title (Optional but good for context) -->
+        <h1 class="title is-3">User Management</h1>
+        <h2 class="subtitle is-5">View and manage all users</h2>
+
+        <!-- Header Row with Dropdown, Search, and Add Button -->
+        <div class="columns is-vcentered mt-5 mb-5">
+          <!-- Empty column for spacing/alignment (adjust as needed) -->
+          <div class="column is-one-fifth">
+            <!-- You can add a title here if you want, e.g., <h3 class="is-size-5">Filters:</h3> -->
+          </div>
+
+          <!-- Dropdown Filter/Actions -->
+          <div class="column is-one-fifth">
+            <div class="dropdown is-hoverable">
+              <!-- Removed dropdown-trigger wrapper as dropdown already handles hover -->
+              <div class="dropdown-trigger">
+                <button
+                  class="button"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu"
+                >
+                  <span>Filter/Actions</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <a href="#" class="dropdown-item"> Filter by Role (Admin) </a>
+                  <a href="#" class="dropdown-item"> Filter by Role (User) </a>
+                  <a href="#" class="dropdown-item"> Export All </a>
+                  <hr class="dropdown-divider" />
+                  <a href="#" class="dropdown-item"> Other Action </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Bar (takes up available space) -->
+          <div class="column">
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <!-- is-expanded makes input take available space -->
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Search users..."
+                />
+              </div>
+              <div class="control">
+                <a class="button is-link">
+                  <span class="icon is-small"
+                    ><i class="fas fa-search"></i
+                  ></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Button (aligned right) -->
+          <div class="column is-narrow is-flex is-justify-content-flex-end">
+            <a class="button is-primary" th:href="@{user/add}">
+              <span class="icon is-small mr-1"><i class="fas fa-add"></i></span>
+              <span>Add New User</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- User Table -->
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th class="has-text-centered">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="user : ${users}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.username}">John Doe</td>
+                <td th:text="${user.roles}">role</td>
+                <td class="has-text-centered">
+                  <div class="buttons is-centered are-small">
+                    <a
+                      th:href="@{/users/edit/{id}(id=${user.id})}"
+                      class="button is-info"
+                    >
+                      <span class="icon"><i class="fas fa-edit"></i></span>
+                    </a>
+                    <a
+                      th:href="@{/users/delete/{id}(id=${user.id})}"
+                      class="button is-danger"
+                    >
+                      <span class="icon"><i class="fas fa-trash-alt"></i></span>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <!-- Fallback if no users are found -->
+              <tr th:if="${#lists.isEmpty(users)}">
+                <td colspan="3" class="has-text-centered">
+                  No users found.
+                  <a
+                    th:href="@{/users/new}"
+                    class="button is-small is-primary ml-2"
+                    >Add New User</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Optional: Pagination (Bulma has great pagination components) -->
+        <!-- <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a class="pagination-previous" title="This is the first page" disabled>Previous</a>
+          <a class="pagination-next">Next page</a>
+          <ul class="pagination-list">
+            <li><a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a></li>
+            <li><a class="pagination-link" aria-label="Goto page 2">2</a></li>
+            <li><a class="pagination-link" aria-label="Goto page 3">3</a></li>
+          </ul>
+        </nav> -->
+      </div>
+    </section>
+  </main>
+</html>

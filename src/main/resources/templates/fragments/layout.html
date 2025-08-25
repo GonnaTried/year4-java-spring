@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:fragment="layout(title, content)"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title th:replace="${title}">Java III</title>
+
+    <!-- Links to CSS frameworks -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <!-- Own Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/phsar-khmer-theme.css}" />
+  </head>
+  <body>
+    <!-- ======================= NAVIGATION BAR ======================= -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <!-- Wrapped in a container for proper alignment -->
+      <div class="navbar-brand">
+        <!-- Added Brand Name / Logo -->
+        <a
+          class="navbar-item"
+          th:href="@{/home}"
+          th:classappend="${activePage == 'home' ? 'is-active' : ''}"
+        >
+          <strong class="is-size-4 has-text-white">Java III</strong>
+        </a>
+
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="phsarKhmerNavbar"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-start">
+        <div class="navbar-item is-search-bar">
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input class="input" type="text" placeholder="Search..." />
+            </div>
+            <div class="control">
+              <a class="button is-link">
+                <span class="icon is-small"><i class="fas fa-search"></i></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="phsarKhmerNavbar" class="navbar-menu">
+        <div class="navbar-end">
+          <a
+            class="navbar-item"
+            th:href="@{/just_added}"
+            th:classappend="${activePage == 'just_added' ? 'is-active-phsar' : ''}"
+          >
+            Just Added
+          </a>
+          <a
+            class="navbar-item"
+            th:href="@{/popular}"
+            th:classappend="${activePage == 'popular' ? 'is-active-phsar' : ''}"
+          >
+            Trending
+          </a>
+          <a
+            class="navbar-item"
+            th:href="@{/category}"
+            th:classappend="${activePage == 'category' ? 'is-active-phsar' : ''}"
+          >
+            Categories
+          </a>
+        </div>
+        <div class="navbar-item">
+          <div sec:authorize="isAnonymous()" class="buttons">
+            <a th:href="@{/register}" class="button is-primary">
+              <strong>Sign Up</strong>
+            </a>
+            <a th:href="@{/login}" class="button is-light"> Log In </a>
+          </div>
+
+          <div sec:authorize="hasRole('USER')" class="buttons">
+            <a th:href="@{/sell}" class="button is-primary">
+              <strong>Start Selling</strong>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: inline">
+              <button class="button is-light" type="submit">Log Out</button>
+            </form>
+          </div>
+          <div sec:authorize="hasRole('ADMIN')" class="buttons">
+            <a th:href="@{/admin}" class="button is-primary">
+              <strong>Admin Panel</strong>
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: inline">
+              <button class="button is-light" type="submit">Log Out</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ======================= DYNAMIC CONTENT ======================= -->
+    <div th:replace="${content}">
+      <p>This is where the page-specific content will go.</p>
+    </div>
+
+    <!-- ======================= FOOTER ======================= -->
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Java III</strong> - Your online marketplace for Cambodian
+          goods.
+        </p>
+        <p>&copy; 2025 Java III. All Rights Reserved.</p>
+        <div>
+          <a href="#" class="has-text-link">About Us</a> |
+          <a href="#" class="has-text-link">Contact</a> |
+          <a href="#" class="has-text-link">Privacy Policy</a> |
+          <a href="#" class="has-text-warning">Terms & Conditions</a> |
+          <a href="#" class="has-text-danger">Report Problem</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Script for mobile navbar burger -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const $navbarBurgers = Array.prototype.slice.call(
+          document.querySelectorAll(".navbar-burger"),
+          0
+        );
+        if ($navbarBurgers.length > 0) {
+          $navbarBurgers.forEach((el) => {
+            el.addEventListener("click", () => {
+              const target = el.dataset.target;
+              const $target = document.getElementById(target);
+              el.classList.toggle("is-active");
+              $target.classList.toggle("is-active");
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+
+
+/* 1. Root Variables */
+:root {
+  --phsar-red: #DC2626;
+  --phsar-red-hover: #B91C1C; 
+  --phsar-blue: #2563EB;
+  --phsar-blue-hover: #1D4ED8;
+  --phsar-white: #F9FAFB;
+  --phsar-dark-bg: #111827;
+  --phsar-dark-surface: #1F2937;
+  --phsar-gray-text: #9CA3AF;
+}
+
+/* 2. Global & Body Styles */
+body {
+  background-color: var(--phsar-dark-bg);
+  color: var(--phsar-white);
+  height: 100%;
+  overflow: hidden;
+}
+
+.title, .subtitle {
+  color: var(--phsar-white);
+}
+
+.subtitle {
+  color: var(--phsar-gray-text);
+}
+
+/* 3. Override Bulma's Primary Color (Red) */
+
+/* Buttons */
+.button.is-primary { background-color: var(--phsar-red); border-color: transparent; color: #fff !important; }
+.button.is-primary:hover { background-color: var(--phsar-red-hover); }
+
+.button.is-link { background-color: var(--phsar-blue); border-color: transparent; color: #fff; }
+.button.is-link:hover { background-color: var(--phsar-blue-hover); }
+
+.button.is-light { background-color: #4B5563; color: #F9FAFB; border: none; }
+.button.is-light:hover { background-color: #6B7280; }
+
+.has-text-primary { color: var(--phsar-red) !important; }
+.has-background-primary { background-color: var(--phsar-red) !important; }
+
+
+.is-primary {
+  background-color: var(--phsar-red) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+.is-primary:hover, .is-primary.is-hovered {
+  background-color: var(--phsar-red-hover) !important;
+}
+.has-text-primary {
+  color: var(--phsar-red) !important;
+}
+.has-background-primary {
+  background-color: var(--phsar-red) !important;
+}
+
+/* 4. Override Bulma's Link Color (Blue) */
+.is-link {
+  background-color: var(--phsar-blue) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+.is-link:hover, .is-link.is-hovered {
+  background-color: var(--phsar-blue-hover) !important;
+}
+.has-text-link {
+  color: var(--phsar-blue) !important;
+}
+
+/* 5. Navbar */
+.navbar-item form {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.navbar { background-color: var(--phsar-dark-surface); }
+.navbar-item, .navbar-link { color: var(--phsar-white); font-weight: 700; }
+.navbar-brand a.navbar-item {
+    background-color: transparent !important; 
+}
+.navbar-brand a.navbar-item:hover {
+    background-color: var(--phsar-dark-bg) !important; 
+    color: var(--phsar-white) !important; 
+}
+a.navbar-item:hover, .navbar-link:hover { background-color: var(--phsar-dark-bg) !important; color: var(--phsar-blue) !important; }
+.navbar-item.is-active-phsar { background-color: var(--phsar-red) !important; color: var(--phsar-white) !important; }
+.navbar-item.is-active-phsar:hover { background-color: var(--phsar-red-hover) !important; }
+.navbar-dropdown.is-dark { background-color: var(--phsar-dark-bg); border-top: 1px solid var(--phsar-dark-surface); }
+.navbar-dropdown.is-dark .navbar-item { color: var(--phsar-white); }
+.navbar-dropdown.is-dark a.navbar-item:hover { background-color: var(--phsar-dark-surface) !important; color: var(--phsar-blue) !important; }
+.navbar-divider { background-color: var(--phsar-dark-surface); }
+
+/* 6. Override Input and Search Bar */
+.input, .textarea {
+  background-color: var(--phsar-dark-surface);
+  border-color: #4b5563;
+  color: var(--phsar-white);
+}
+.input::placeholder, .textarea::placeholder {
+  color: var(--phsar-gray-text);
+}
+.input:focus, .textarea:focus, .input:active, .textarea:active {
+  border-color: var(--phsar-blue) !important;
+  box-shadow: 0 0 0 0.125em rgba(37, 99, 235, 0.25);
+}
+
+/* 7. Override Button 'light' for dark theme */
+.button.is-light {
+    background-color: #4B5563;
+    color: #F9FAFB;
+}
+.button.is-light:hover {
+    background-color: #6B7280;
+}

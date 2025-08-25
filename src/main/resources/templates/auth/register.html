@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+>
+  <head>
+    <title>Register</title>
+  </head>
+  <main>
+    <div class="container column is-3">
+      <h2 class="title is-3 has-text-centered">Create an Account</h2>
+
+      <!-- Form for registration -->
+      <form th:action="@{/register}" th:object="${user}" method="post">
+        <!-- Username Field -->
+        <div
+          th:if="${#fields.hasGlobalErrors()}"
+          class="notification is-danger is-light"
+        >
+          <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+        <div class="field">
+          <label class="label" for="username">Username</label>
+          <div class="control has-icons-left">
+            <input
+              id="username"
+              class="input"
+              type="text"
+              placeholder="Username or Email"
+              th:field="*{username}"
+              required
+              autofocus="autofocus"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+          <!-- Validation Error Message -->
+          <p
+            th:if="${#fields.hasErrors('username')}"
+            th:errors="*{username}"
+            class="help is-danger"
+          ></p>
+        </div>
+
+        <!-- Password Field -->
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <div class="control has-icons-left">
+            <input
+              id="password"
+              class="input"
+              type="password"
+              placeholder="Password"
+              th:field="*{password}"
+              required
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+            <p
+              th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}"
+              class="help is-danger"
+            ></p>
+          </div>
+
+          <div class="field mt-3">
+            <label class="label" for="confirmPassword">Retype Password</label>
+            <div class="control has-icons-left">
+              <input
+                id="confirmPassword"
+                class="input"
+                type="password"
+                placeholder="Confirm Password"
+                th:field="*{confirmPassword}"
+              />
+              <span class="icon is-small is-left"
+                ><i class="fas fa-lock"></i
+              ></span>
+            </div>
+            <p
+              th:if="${#fields.hasErrors('confirmPassword')}"
+              th:errors="*{confirmPassword}"
+              class="help is-danger"
+            ></p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="field">
+          <div class="control">
+            <button type="submit" class="button is-success is-fullwidth">
+              <b>Register</b>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="has-text-centered mt-4">
+        <span>Already registered? <a th:href="@{/login}">Login here</a></span>
+      </div>
+    </div>
+  </main>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+>
+  <head>
+    <title>Login</title>
+  </head>
+  <main>
+    <form th:action="@{/login}" method="post">
+      <h2 class="title is-3 has-text-centered">Sign in</h2>
+
+      <div
+        th:if="${param.error}"
+        class="has-text-centered notification is-danger"
+      >
+        Invalid username or password.
+      </div>
+
+      <div
+        th:if="${param.logout}"
+        class="has-text-centered notification is-success"
+      >
+        You have been logged out.
+      </div>
+
+      <div class="container column is-3">
+        <div class="field">
+          <label class="label" for="username">Username or Email</label>
+
+          <p class="control has-icons-left has-icons-right">
+            <input
+              id="Username"
+              class="input"
+              type="text"
+              placeholder="Username or Email"
+              name="username"
+              required
+              autofocus
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <label class="label" for="password">Password</label>
+
+          <p class="control has-icons-left">
+            <input
+              id="password"
+              class="input"
+              type="password"
+              placeholder="Password"
+              name="password"
+              required
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-success is-fullwidth" type="submit">
+              <b>Login</b>
+            </button>
+          </p>
+        </div>
+        <div class="has-text-centered mt-4">
+          <span
+            >Don't have an account?
+            <a th:href="@{/login}">Register here</a></span
+          >
+        </div>
+      </div>
+    </form>
+  </main>
+</html>
