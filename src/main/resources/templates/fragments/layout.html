@@ -2,7 +2,6 @@
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   th:fragment="layout(title, content)"
 >
   <head>
@@ -92,28 +91,28 @@
           </a>
         </div>
         <div class="navbar-item">
-          <div sec:authorize="isAnonymous()" class="buttons">
+          <!-- ANONYMOUS: Default visible state -->
+          <div id="anonymous-buttons" class="buttons">
             <a th:href="@{/register}" class="button is-primary">
               <strong>Sign Up</strong>
             </a>
             <a th:href="@{/login}" class="button is-light"> Log In </a>
           </div>
 
-          <div sec:authorize="hasRole('USER')" class="buttons">
+          <!-- USER: Initially hidden, shown by JS -->
+          <div id="user-buttons" class="buttons" style="display: none">
             <a th:href="@{/sell}" class="button is-primary">
               <strong>Start Selling</strong>
             </a>
-            <form th:action="@{/logout}" method="post" style="display: inline">
-              <button class="button is-light" type="submit">Log Out</button>
-            </form>
+            <a id="logout-button-user" class="button is-light">Log Out</a>
           </div>
-          <div sec:authorize="hasRole('ADMIN')" class="buttons">
+
+          <!-- ADMIN: Initially hidden, shown by JS -->
+          <div id="admin-buttons" class="buttons" style="display: none">
             <a th:href="@{/admin}" class="button is-primary">
               <strong>Admin Panel</strong>
             </a>
-            <form th:action="@{/logout}" method="post" style="display: inline">
-              <button class="button is-light" type="submit">Log Out</button>
-            </form>
+            <a id="logout-button-admin" class="button is-light">Log Out</a>
           </div>
         </div>
       </div>
@@ -161,5 +160,8 @@
         }
       });
     </script>
+
+    <!-- Global script to handle JWT-based UI changes -->
+    <script th:src="@{/js/global.js}"></script>
   </body>
 </html>

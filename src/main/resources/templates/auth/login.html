@@ -2,37 +2,31 @@
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
 >
   <head>
     <title>Login</title>
   </head>
   <main>
-    <form th:action="@{/login}" method="post">
+    <!-- 1. Form tag is updated: no action/method, but has an ID -->
+    <form id="login-form">
       <h2 class="title is-3 has-text-centered">Sign in</h2>
 
+      <!-- 2. This div will be used by JavaScript to show errors -->
       <div
-        th:if="${param.error}"
+        id="error-message"
         class="has-text-centered notification is-danger"
-      >
-        Invalid username or password.
-      </div>
-
-      <div
-        th:if="${param.logout}"
-        class="has-text-centered notification is-success"
-      >
-        You have been logged out.
-      </div>
+        style="display: none"
+      ></div>
 
       <div class="container column is-3">
         <div class="field">
           <label class="label" for="username">Username or Email</label>
 
           <p class="control has-icons-left has-icons-right">
+            <!-- 3. Changed id="Username" to id="username" for consistency -->
             <input
-              id="Username"
+              id="username"
               class="input"
               type="text"
               placeholder="Username or Email"
@@ -70,12 +64,16 @@
           </p>
         </div>
         <div class="has-text-centered mt-4">
+          <!-- This link to register should be updated if it's incorrect -->
           <span
             >Don't have an account?
-            <a th:href="@{/login}">Register here</a></span
+            <a th:href="@{/register}">Register here</a></span
           >
         </div>
       </div>
     </form>
+
+    <!-- 4. Include the JavaScript file at the end of your main content -->
+    <script th:src="@{/js/auth.js}"></script>
   </main>
 </html>

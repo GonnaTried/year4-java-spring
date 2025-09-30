@@ -2,48 +2,54 @@ package com.bunnet.year4.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.bunnet.year4.service.CustomUserDetailsService;
+import com.bunnet.year4.config.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    // Constructor to inject our new filter and provider
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.authenticationProvider = authenticationProvider;
     }
 
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        // Use BCrypt for strong, salted password hashing
-        return new BCryptPasswordEncoder();
-    }
-
+    // Your PasswordEncoder bean is now in ApplicationConfig.java
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/", "/home", "/register", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**", "/favicon.ico").permitAll()
-                .requestMatchers("admin/**").hasRole("ADMIN")
-                .requestMatchers("user/**").hasAnyRole("USER", "ADMIN")
+                // Whitelist public endpoints and resources
+                .requestMatchers(
+                        "/api/auth/**", // The REST login endpoint
+                        "/login", // The HTML login page
+                        "/register", // The HTML register page
+                        "/js/**", // ALL JavaScript files in static/js
+                        "/css/**", // Your CSS files
+                        "/images/**", // Your image files
+                        "/", "/home", // Other public pages
+                        "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**", "/favicon.ico"
+                ).permitAll()
+                // Keep your role-based authorization rules
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                // Secure everything else
                 .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/home")
-                .permitAll())
-                .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll());
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
