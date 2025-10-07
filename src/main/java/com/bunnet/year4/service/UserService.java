@@ -26,6 +26,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    // get user by id use Optional
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public void register(UserRegistrationDto registrationDto) throws Exception {
         if (userRepository.findByUsername(registrationDto.getUsername()).isPresent()) {
             throw new Exception("User with username " + registrationDto.getUsername() + " already exists.");

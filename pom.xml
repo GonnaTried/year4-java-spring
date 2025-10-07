@@ -108,6 +108,15 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- spring shell -->
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell-starter</artifactId>
+            <version>3.2.0</version> 
+        </dependency>
+
+  
+
 
     </dependencies>
 
